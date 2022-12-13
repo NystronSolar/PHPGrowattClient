@@ -4,6 +4,9 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/NystronSolar/PHPGrowattClient",
+    "scripts": {
+        "test": "vendor/bin/phpunit tests/"
+    },
     "autoload": {
         "psr-4": {
             "NystronSolar\\PHPGrowattClient\\": "src/"
