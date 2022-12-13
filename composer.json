@@ -1,0 +1,25 @@
+{
+    "name": "nystron-solar/php-growatt-client",
+    "description": "A Growatt Api Client in PHP.",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/NystronSolar/PHPGrowattClient",
+    "autoload": {
+        "psr-4": {
+            "NystronSolar\\PHPGrowattClient\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "TheDevick"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "ext-bcmath": "*",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
