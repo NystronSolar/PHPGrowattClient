@@ -1,5 +1,23 @@
-- name: PHPUnit
-  uses: shivammathur/setup-php@v2
-  with:
-    php-version: '8.2'
-    tools: phpunit
+name: PHP Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: PHPUnit
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        tools: phpunit
+
+
