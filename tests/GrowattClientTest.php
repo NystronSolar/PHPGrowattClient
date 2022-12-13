@@ -20,4 +20,19 @@ class GrowattClientTest extends TestCase
 
         return $growattClient;
     }
+
+    /**
+     *  
+     * 
+     * @test
+     */
+    public function test_create_url()
+    {
+        $client = $this->createGrowattClient();
+
+        $url = $client->createURL("test/route");
+
+        $this->assertSame("https://test.growatt.com/v1/test/route", $url);
+    }
+
 }
