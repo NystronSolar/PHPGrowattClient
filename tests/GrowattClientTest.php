@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Exception\ClientException;
 use NystronSolar\PHPGrowattClient\GrowattClient;
 use PHPUnit\Framework\TestCase;
 
@@ -20,9 +21,6 @@ class GrowattClientTest extends TestCase
         return $growattClient;
     }
 
-    /**
-     * @test
-     */
     public function test_create_url()
     {
         $client = $this->createGrowattClient();
@@ -32,4 +30,18 @@ class GrowattClientTest extends TestCase
         $this->assertSame("https://test.growatt.com/v1/test/route", $url);
     }
 
+    public function test_updating_guzzle_client_on_set_api_key()
+    {
+        // Assert
+        $this->expectException(ClientException::class);
+        $this->expectExceptionMessage("Client error: `GET https://test.growatt.com/v1/` resulted in a `404 Not Found` response:");
+
+        // Arrange
+        $client = new GrowattClient("Wrong Api Key", $this->apiUrl);
+        $client->setApiKey($this->apiToken);
+        $url = $client->createURL(""); // If the API Key is valid, it will return 404 status code. Else, it will return 200 Status code and an JSON containing an API Key Error
+
+        // Act
+        $client->getGuzzleClient()->get($url);
+    }
 }
