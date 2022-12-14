@@ -15,15 +15,12 @@ class GrowattClientTest extends TestCase
      */
     private function createGrowattClient(): GrowattClient
     {
-
         $growattClient = new GrowattClient($this->apiToken, $this->apiUrl);
 
         return $growattClient;
     }
 
     /**
-     *  
-     * 
      * @test
      */
     public function test_create_url()
