@@ -2,6 +2,7 @@
 
 namespace NystronSolar\PHPGrowattClient;
 
+use GuzzleHttp\Client as GuzzleClient;
 use SensitiveParameter;
 
 /**
@@ -13,13 +14,15 @@ class GrowattClient
 
     private string $apiUrl;
 
+    private GuzzleClient $guzzleClient;
+
     public function __construct(
         #[SensitiveParameter] string $_apiKey,
         string $_apiUrl = "https://openapi.growatt.com/"
     )
     {
-        $this->apiKey = $_apiKey;
-        $this->apiUrl = $_apiUrl;
+        $this->setApiKey($_apiKey);
+        $this->setApiURL($_apiUrl);
     }
 
     /**
@@ -54,14 +57,30 @@ class GrowattClient
     }
 
     /**
+     * Get the Guzzle Client
+     * 
+     * @return GuzzleClient
+     */
+    public function getGuzzleClient(): GuzzleClient
+    {
+        return $this->guzzleClient;
+    }
+
+    /**
      * Set the API Key
      * 
      * @param string $_apiKey
+     * @param bool $changeGuzzleClient If true, the next requests to the Growatt API will be with the new Api Key.
+     * 
      * @return GrowattClient
      */
-    public function setApiKey(#[SensitiveParameter] string $_apiKey): GrowattClient
+    public function setApiKey(#[SensitiveParameter] string $_apiKey, bool $changeGuzzleClient = true): GrowattClient
     {
         $this->apiKey = $_apiKey;
+
+        if($changeGuzzleClient) {
+            $this->setGuzzleClient();
+        }
 
         return $this;
     }
@@ -75,6 +94,17 @@ class GrowattClient
     public function setApiURL(string $_apiUrl): GrowattClient
     {
         $this->apiUrl = $_apiUrl;
+
+        return $this;
+    }
+
+    private function setGuzzleClient(): GrowattClient
+    {
+        $apiKey = $this->getApiKey();
+
+        $client = new GuzzleClient(["headers" => ["token" => $apiKey]]);
+
+        $this->guzzleClient = $client;
 
         return $this;
     }
