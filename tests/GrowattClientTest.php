@@ -30,16 +30,16 @@ class GrowattClientTest extends TestCase
         $this->assertSame("https://test.growatt.com/v1/test/route", $url);
     }
 
-    public function test_updating_guzzle_client_on_set_api_key()
+    public function test_updating_guzzle_client_on_set_api_token()
     {
         // Assert
         $this->expectException(ClientException::class);
         $this->expectExceptionMessage("Client error: `GET https://test.growatt.com/v1/` resulted in a `404 Not Found` response:");
 
         // Arrange
-        $client = new GrowattClient("Wrong Api Key", $this->apiURL);
-        $client->setApiKey($this->apiToken);
-        $url = $client->createURL(""); // If the API Key is valid, it will return 404 status code. Else, it will return 200 Status code and an JSON containing an API Key Error
+        $client = new GrowattClient("Wrong Api Token", $this->apiURL);
+        $client->setApiToken($this->apiToken);
+        $url = $client->createURL(""); // If the API Token is valid, it will return 404 status code. Else, it will return 200 Status code and an JSON containing an API Token Error
 
         // Act
         $client->getGuzzleClient()->get($url);

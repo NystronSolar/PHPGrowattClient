@@ -10,18 +10,18 @@ use SensitiveParameter;
  */
 class GrowattClient
 {
-    private string $apiKey;
+    private string $apiToken;
 
     private string $apiURL;
 
     private GuzzleClient $guzzleClient;
 
     public function __construct(
-        #[SensitiveParameter] string $_apiKey,
+        #[SensitiveParameter] string $_apiToken,
         string $_apiURL = "https://openapi.growatt.com/"
     )
     {
-        $this->setApiKey($_apiKey);
+        $this->setApiToken($_apiToken);
         $this->setApiURL($_apiURL);
     }
 
@@ -37,13 +37,13 @@ class GrowattClient
     }
 
     /**
-     * Get the API Key
+     * Get the API Token
      * 
      * @return string
      */
-    public function getApiKey(): string
+    public function getApiToken(): string
     {
-        return $this->apiKey;
+        return $this->apiToken;
     }
 
     /**
@@ -67,16 +67,16 @@ class GrowattClient
     }
 
     /**
-     * Set the API Key
+     * Set the API Token
      * 
-     * @param string $_apiKey
-     * @param bool $changeGuzzleClient If true, the next requests to the Growatt API will be with the new Api Key.
+     * @param string $_apiToken
+     * @param bool $changeGuzzleClient If true, the next requests to the Growatt API will be with the new Api Token.
      * 
      * @return GrowattClient
      */
-    public function setApiKey(#[SensitiveParameter] string $_apiKey, bool $changeGuzzleClient = true): GrowattClient
+    public function setApiToken(#[SensitiveParameter] string $_apiToken, bool $changeGuzzleClient = true): GrowattClient
     {
-        $this->apiKey = $_apiKey;
+        $this->apiToken = $_apiToken;
 
         if($changeGuzzleClient) {
             $this->setGuzzleClient();
@@ -100,9 +100,9 @@ class GrowattClient
 
     private function setGuzzleClient(): GrowattClient
     {
-        $apiKey = $this->getApiKey();
+        $apiToken = $this->getApiToken();
 
-        $client = new GuzzleClient(["headers" => ["token" => $apiKey]]);
+        $client = new GuzzleClient(["headers" => ["token" => $apiToken]]);
 
         $this->guzzleClient = $client;
 
