@@ -8,7 +8,7 @@ class GrowattClientTest extends TestCase
 {
     private string $apiToken = "6eb6f069523055a339d71e5b1f6c88cc"; // API Token used for tests
 
-    private string $apiUrl = "https://test.growatt.com/v1/"; // API URL used for tests
+    private string $apiURL = "https://test.growatt.com/v1/"; // API URL used for tests
 
     /**
      * Create a Growatt Client object
@@ -16,7 +16,7 @@ class GrowattClientTest extends TestCase
      */
     private function createGrowattClient(): GrowattClient
     {
-        $growattClient = new GrowattClient($this->apiToken, $this->apiUrl);
+        $growattClient = new GrowattClient($this->apiToken, $this->apiURL);
 
         return $growattClient;
     }
@@ -37,7 +37,7 @@ class GrowattClientTest extends TestCase
         $this->expectExceptionMessage("Client error: `GET https://test.growatt.com/v1/` resulted in a `404 Not Found` response:");
 
         // Arrange
-        $client = new GrowattClient("Wrong Api Key", $this->apiUrl);
+        $client = new GrowattClient("Wrong Api Key", $this->apiURL);
         $client->setApiKey($this->apiToken);
         $url = $client->createURL(""); // If the API Key is valid, it will return 404 status code. Else, it will return 200 Status code and an JSON containing an API Key Error
 

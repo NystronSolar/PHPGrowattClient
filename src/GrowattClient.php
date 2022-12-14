@@ -12,17 +12,17 @@ class GrowattClient
 {
     private string $apiKey;
 
-    private string $apiUrl;
+    private string $apiURL;
 
     private GuzzleClient $guzzleClient;
 
     public function __construct(
         #[SensitiveParameter] string $_apiKey,
-        string $_apiUrl = "https://openapi.growatt.com/"
+        string $_apiURL = "https://openapi.growatt.com/"
     )
     {
         $this->setApiKey($_apiKey);
-        $this->setApiURL($_apiUrl);
+        $this->setApiURL($_apiURL);
     }
 
     /**
@@ -33,7 +33,7 @@ class GrowattClient
      */
     public function createURL(string $route): string
     {
-        return $this->apiUrl . $route;
+        return $this->apiURL . $route;
     }
 
     /**
@@ -53,7 +53,7 @@ class GrowattClient
      */
     public function getApiURL(): string
     {
-        return $this->apiUrl;
+        return $this->apiURL;
     }
 
     /**
@@ -88,12 +88,12 @@ class GrowattClient
     /**
      * Set the API URL
      * 
-     * @param string $_apiUrl
+     * @param string $_apiURL
      * @return GrowattClient
      */
-    public function setApiURL(string $_apiUrl): GrowattClient
+    public function setApiURL(string $_apiURL): GrowattClient
     {
-        $this->apiUrl = $_apiUrl;
+        $this->apiURL = $_apiURL;
 
         return $this;
     }
