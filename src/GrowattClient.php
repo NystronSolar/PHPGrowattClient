@@ -2,6 +2,7 @@
 
 namespace NystronSolar\PHPGrowattClient;
 
+use GuzzleHttp\Client as GuzzleClient;
 use SensitiveParameter;
 
 /**
@@ -9,17 +10,19 @@ use SensitiveParameter;
  */
 class GrowattClient
 {
-    #[SensitiveParameter] private string $apiKey;
+    private string $apiToken;
 
-    private string $apiUrl;
+    private string $apiURL;
+
+    private GuzzleClient $guzzleClient;
 
     public function __construct(
-        #[SensitiveParameter] string $_apiKey,
-        string $_apiUrl = "https://openapi.growatt.com/"
+        #[SensitiveParameter] string $_apiToken,
+        string $_apiURL = "https://openapi.growatt.com/"
     )
     {
-        $this->apiKey = $_apiKey;
-        $this->apiUrl = $_apiUrl;
+        $this->setApiToken($_apiToken);
+        $this->setApiURL($_apiURL);
     }
 
     /**
@@ -30,17 +33,17 @@ class GrowattClient
      */
     public function createURL(string $route): string
     {
-        return $this->apiUrl . $route;
+        return $this->apiURL . $route;
     }
 
     /**
-     * Get the API Key
+     * Get the API Token
      * 
      * @return string
      */
-    public function getApiKey(): string
+    public function getApiToken(): string
     {
-        return $this->apiKey;
+        return $this->apiToken;
     }
 
     /**
@@ -50,18 +53,34 @@ class GrowattClient
      */
     public function getApiURL(): string
     {
-        return $this->apiUrl;
+        return $this->apiURL;
     }
 
     /**
-     * Set the API Key
+     * Get the Guzzle Client
      * 
-     * @param string $_apiKey
+     * @return GuzzleClient
+     */
+    public function getGuzzleClient(): GuzzleClient
+    {
+        return $this->guzzleClient;
+    }
+
+    /**
+     * Set the API Token
+     * 
+     * @param string $_apiToken
+     * @param bool $changeGuzzleClient If true, the next requests to the Growatt API will be with the new Api Token.
+     * 
      * @return GrowattClient
      */
-    public function setApiKey(#[SensitiveParameter] string $_apiKey): GrowattClient
+    public function setApiToken(#[SensitiveParameter] string $_apiToken, bool $changeGuzzleClient = true): GrowattClient
     {
-        $this->apiKey = $_apiKey;
+        $this->apiToken = $_apiToken;
+
+        if($changeGuzzleClient) {
+            $this->setGuzzleClient();
+        }
 
         return $this;
     }
@@ -69,12 +88,23 @@ class GrowattClient
     /**
      * Set the API URL
      * 
-     * @param string $_apiUrl
+     * @param string $_apiURL
      * @return GrowattClient
      */
-    public function setApiURL(string $_apiUrl): GrowattClient
+    public function setApiURL(string $_apiURL): GrowattClient
     {
-        $this->apiUrl = $_apiUrl;
+        $this->apiURL = $_apiURL;
+
+        return $this;
+    }
+
+    private function setGuzzleClient(): GrowattClient
+    {
+        $apiToken = $this->getApiToken();
+
+        $client = new GuzzleClient(["headers" => ["token" => $apiToken]]);
+
+        $this->guzzleClient = $client;
 
         return $this;
     }
