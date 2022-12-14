@@ -9,7 +9,7 @@ use SensitiveParameter;
  */
 class GrowattClient
 {
-    #[SensitiveParameter] private string $apiKey;
+    private string $apiKey;
 
     private string $apiUrl;
 
